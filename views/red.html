@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ConvocARTE - Red de contactos</title>
+
+  <!-- Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+      :root {
+      --bg: #f8f9fa;
+      --card-bg: #fff;
+      --text: #212529;
+      --muted: #6c757d;
+      --accent: #4a47a3;
+      /* Morado */
+      --success: #10b981;
+      --danger: #ef4444;
+      --border: #dee2e6;
+      --radius: 12px;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+   
+
+
+    
+
+
+
+    /* Container */
+    .wrap {
+      max-width: 1100px;
+      margin: 28px auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .search {
+      flex: 1;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .search input {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      background: #fff;
+      outline: none;
+      font-size: 0.95rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chip {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 8px 12px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .chip.active {
+      border-color: var(--accent);
+      box-shadow: 0 3px 10px rgba(74, 71, 163, 0.08);
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 6px 18px rgba(20, 20, 40, 0.04);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: transform .15s;
+      min-height: 110px;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .card-body {
+      flex: 1;
+    }
+
+    .card-body h3 {
+      margin: 0;
+      font-size: 1.02rem;
+      color: var(--accent);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+
+    .tags {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: #f3f4fb;
+      color: var(--accent);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-left: 12px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(74, 71, 163, 0.12);
+      font-weight: 600;
+    }
+
+    .small-muted {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* Empty state */
+    .empty {
+      text-align: center;
+      padding: 40px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4));
+      border: 1px dashed rgba(0, 0, 0, 0.04);
+      color: var(--muted);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 18px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all .15s;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 720px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .modal .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal .profile {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .modal .profile img {
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .modal .info p {
+      margin: 6px 0;
+      color: var(--muted);
+    }
+
+    /* 📌 Ajuste general para pantallas pequeñas */
+    @media (max-width: 768px) {
+
+      /* Contenedor principal */
+      .container {
+        width: 95%;
+        padding: 10px;
+      }
+
+      /* Títulos */
+      h1,
+      h2 {
+        font-size: 1.4rem;
+        text-align: center;
+      }
+
+      /* Barra superior: buscador + filtros */
+      .top-controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .top-controls input {
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .filter-chip {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+      }
+
+      /* 🧱 Grid de perfiles */
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      /* Tarjeta */
+      .profile-card {
+        padding: 12px;
+      }
+
+      .profile-pic {
+        width: 70px;
+        height: 70px;
+      }
+
+      .profile-card h3 {
+        font-size: 1.1rem;
+      }
+
+      .profile-card p {
+        font-size: 0.9rem;
+      }
+
+      .connect-btn {
+        padding: 8px;
+        font-size: 0.9rem;
+      }
+
+      /* MODAL */
+      .modal-content {
+        width: 92%;
+        max-height: 85vh;
+        padding: 15px;
+      }
+
+      .modal-actions {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .modal-actions button {
+        width: 100%;
+      }
+    }
+
+    /* 📱 Pantallas muy pequeñas (teléfonos pequeños) */
+    @media (max-width: 480px) {
+
+      .profile-pic {
+        width: 60px;
+        height: 60px;
+      }
+
+      .profile-card {
+        padding: 8px;
+      }
+
+      .profile-card h3 {
+        font-size: 1rem;
+      }
+
+      .connect-btn {
+        font-size: 0.85rem;
+      }
+    }
+    .navbar {
+  color: white;
+  background: transparent; /* respeta el header */
+  width: 100%;
+        background: linear-gradient(90deg,var(--accent),#6f66d9);
+
+}
+ /* Header (coherente con tu diseño) */
+    header {
+      background: linear-gradient(90deg,var(--accent),#6f66d9);
+      padding:  0rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+   
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+.nav-container {
+  width: 100vw;
+ 
+  display: flex;
+  align-items: center;
+justify-content: space-between;
+  padding: 12px 18px;
+}.logo {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+}.logo img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+/* ENLACES DEL NAV */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+.nav-links a {
+  color: white;          /* respeta tu header blanco */
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.nav-links a:hover {
+  opacity: 0.8;
+}
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 3.2px;
+  background: white;
+  border-radius: 5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: rgba(0,0,0,0.25);  /* sutil, NO cambia el header */
+    backdrop-filter: blur(4px);
+    position: absolute;
+   top: 40px;
+    right:-16px ;
+    width: 200px;
+    border-radius: 0 0 0 12px;
+    padding: 12px;
+  }
+
+  .nav-links.open {
+    display: flex;
+    margin-top: 20px;
+    margin-right: 16px;
+    background-color:#6f66d9;
+  }
+
+  .hamburger {
+    
+    color: #212529;
+    display: flex;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <div class="nav-container">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <!-- Usa la imagen subida en la sesión -->
+          <img src="assets/Imagen de WhatsApp 2025-10-28 a las 14.29.21_f49dac08.jpg" alt="logo"
+            style="width:40px;height:40px;border-radius:8px;object-fit:cover;">
+          <div class="logo">ConvocArte</div>
+        </div>
+
+
+        <div class="nav-links" id="navLinks">
+          <a href="eventos.html">Eventos</a>
+          <a href="postulaciones.html">Postulaciones</a>
+           <a href="#" id="perfilLink">Perfil</a>
+          <a href="red.html">Red</a>
+                <a href="soporte.html">Soporte</a>
+        </div>
+        <div class="hamburger" id="menuBtn">
+        <span></span><span></span><span></span>
+      </div>
+      </div>
+
+    </nav>
+  </header>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="search">
+        <input id="q" placeholder="Busca empresas, artistas o disciplinas (ej: teatro, producción, sonido)" />
+        <button id="clearSearch" class="chip" title="Limpiar">✕</button>
+      </div>
+
+      <div class="filters" aria-hidden="false">
+        <div class="chip" data-filter="all">Todos</div>
+        <div class="chip" data-filter="empresa">Empresas</div>
+        <div class="chip" data-filter="artista">Artistas</div>
+        <div class="chip" data-filter="local">Local</div>
+        <div class="chip" data-filter="remoto">Remoto</div>
+      </div>
+
+      <div style="margin-left:auto; display:flex; gap:8px;">
+        <button id="simAdd" class="chip">+ Simular</button>
+        <button id="showConnections" class="chip">Mis conexiones</button>
+      </div>
+    </div>
+
+    <section id="listArea">
+      <div id="grid" class="grid"></div>
+      <div id="emptyMsg" class="empty" style="display:none;margin-top:12px;">
+        Sin resultados. Prueba otro filtro o palabra.
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal ver perfil -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-hidden="true">
+    <div class="modal">
+      <div class="head">
+        <div class="profile">
+          <img id="modalAvatar" src="" alt="avatar">
+          <div>
+            <h3 id="modalName" style="margin:0;color:var(--accent)"></h3>
+            <div class="small-muted" id="modalRole"></div>
+            <div class="small-muted" id="modalLocation"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button id="modalConnect" class="btn">Conectar</button>
+          <button id="modalMsg" class="btn secondary">Enviar mensaje</button>
+        </div>
+      </div>
+
+      <hr style="border:none;height:1px;background:#f1f1f6;margin:12px 0;">
+
+      <div class="info">
+        <p id="modalBio" class="small-muted"></p>
+        <div style="margin-top:10px;">
+          <strong>Servicios / Sector</strong>
+          <div id="modalTags" style="display:flex;gap:8px;margin-top:8px;"></div>
+        </div>
+      </div>
+
+      <div style="text-align:right; margin-top:12px;">
+        <button id="closeModal" class="chip">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Datos simulados (puedes editar / persistir en localStorage)
+    const STORAGE_KEY = "convocarte_network";
+    const connectionsKey = "convocarte_connections";
+
+    // Inicializa con valores guardados o muestras
+    let items = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
+      {
+        id: 1,
+        type: "empresa",
+        name: "Producciones Aurora",
+        location: "Bogotá, Colombia",
+        role: "Productora",
+        img: "/assets/img/avatar-default.png",
+        bio: "Productora de eventos en vivo, experiencia en festivales medianos.",
+        tags: ["producción", "escenario", "logística"],
+        mode: "local"
+      },
+      {
+        id: 2,
+        type: "artista",
+        name: "Luna Rivera",
+        location: "Medellín, Colombia",
+        role: "Vocalista",
+        img: "https://randomuser.me/api/portraits/women/44.jpg",
+        bio: "Cantante y compositora con experiencia en bandas independientes.",
+        tags: ["voz", "composición", "pop"],
+        mode: "remoto"
+      },
+      {
+        id: 3,
+        type: "empresa",
+        name: "SonidoPro SAS",
+        location: "Cali, Colombia",
+        role: "Proveedor de sonido",
+        img: "https://randomuser.me/api/portraits/men/36.jpg",
+        bio: "Alquiler de equipos y técnicos especializados.",
+        tags: ["sonido", "iluminación"],
+        mode: "local"
+      }
+    ];
+
+    // Conexiones simuladas guardadas (array de ids)
+    let connections = JSON.parse(localStorage.getItem(connectionsKey)) || [];
+
+    // DOM
+    const grid = document.getElementById("grid");
+    const qInput = document.getElementById("q");
+    const chips = document.querySelectorAll(".chip[data-filter]");
+    const emptyMsg = document.getElementById("emptyMsg");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalAvatar = document.getElementById("modalAvatar");
+    const modalName = document.getElementById("modalName");
+    const modalRole = document.getElementById("modalRole");
+    const modalLocation = document.getElementById("modalLocation");
+    const modalBio = document.getElementById("modalBio");
+    const modalTags = document.getElementById("modalTags");
+    const modalConnect = document.getElementById("modalConnect");
+    const modalMsg = document.getElementById("modalMsg");
+    const closeModal = document.getElementById("closeModal");
+    const simAdd = document.getElementById("simAdd");
+    const showConnections = document.getElementById("showConnections");
+    const clearSearch = document.getElementById("clearSearch");
+
+    let activeFilter = "all";
+    let lastViewed = null;
+
+    // Render
+    function renderGrid(list = items) {
+      grid.innerHTML = "";
+      if (!list.length) {
+        emptyMsg.style.display = "block";
+        return;
+      } else {
+        emptyMsg.style.display = "none";
+      }
+
+      list.forEach(it => {
+        const card = document.createElement("div");
+        card.className = "contact-card";
+        card.innerHTML = `
+          <img class="avatar" src="${it.img}" alt="${it.name}">
+          <div class="card-body">
+            <h3>${it.name}</h3>
+            <div class="meta">${it.role} • <span class="small-muted">${it.location}</span></div>
+            <div class="tags">${it.tags.slice(0, 3).map(t => `<span class="tag">${t}</span>`).join("")}</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn view" data-id="${it.id}">Ver</button>
+            <button class="btn secondary connect" data-id="${it.id}">${connections.includes(it.id) ? "Conectado" : "Conectar"}</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // handlers
+      grid.querySelectorAll(".view").forEach(b => b.addEventListener("click", e => {
+        const id = Number(e.currentTarget.dataset.id);
+        openProfile(id);
+      }));
+
+      grid.querySelectorAll(".connect").forEach(b => b.addEventListener("click", e => {
+        const id = Number(e.currentTarget.dataset.id);
+        toggleConnect(id);
+        renderGrid(filterAndSearch());
+      }));
+    }
+
+    // Filtrado y búsqueda
+    function filterAndSearch() {
+      const q = qInput.value.trim().toLowerCase();
+      return items.filter(it => {
+        // filter chip
+        if (activeFilter === "empresa" && it.type !== "empresa") return false;
+        if (activeFilter === "artista" && it.type !== "artista") return false;
+        if (activeFilter === "local" && it.mode !== "local") return false;
+        if (activeFilter === "remoto" && it.mode !== "remoto") return false;
+
+        // search
+        if (!q) return true;
+        const text = [it.name, it.role, it.location, it.tags.join(" "), it.bio].join(" ").toLowerCase();
+        return text.includes(q);
+      });
+    }
+
+    // Chips click
+    chips.forEach(c => {
+      c.addEventListener("click", () => {
+        chips.forEach(x => x.classList.remove("active"));
+        c.classList.add("active");
+        activeFilter = c.dataset.filter;
+        renderGrid(filterAndSearch());
+      });
+      // default all active
+      if (c.dataset.filter === "all") c.classList.add("active");
+    });
+
+    // Search
+    qInput.addEventListener("input", () => renderGrid(filterAndSearch()));
+    clearSearch.addEventListener("click", () => { qInput.value = ""; renderGrid(filterAndSearch()); });
+
+    // Open profile
+    function openProfile(id) {
+      lastViewed = id;
+      const it = items.find(x => x.id === id);
+      if (!it) return;
+      modalAvatar.src = it.img;
+      modalName.textContent = it.name;
+      modalRole.textContent = it.role + " • " + (it.type === "empresa" ? "Empresa" : "Artista");
+      modalLocation.textContent = it.location;
+      modalBio.textContent = it.bio;
+      modalTags.innerHTML = it.tags.map(t => `<span class="tag">${t}</span>`).join("");
+      modalConnect.textContent = connections.includes(id) ? "Conectado" : "Conectar";
+
+      modalBackdrop.classList.add("open");
+      modalBackdrop.setAttribute("aria-hidden", "false");
+    }
+
+    // Close
+    closeModal.addEventListener("click", closeProfile);
+    modalBackdrop.addEventListener("click", (e) => { if (e.target === modalBackdrop) closeProfile(); });
+
+    function closeProfile() {
+      modalBackdrop.classList.remove("open");
+      modalBackdrop.setAttribute("aria-hidden", "true");
+      lastViewed = null;
+    }
+
+    // Connect toggle
+    function toggleConnect(id) {
+      if (connections.includes(id)) {
+        connections = connections.filter(x => x !== id);
+        showToast("Desconectado");
+      } else {
+        connections.push(id);
+        showToast("Conexión enviada");
+      }
+      localStorage.setItem(connectionsKey, JSON.stringify(connections));
+    }
+
+    // Modal Connect button
+    modalConnect.addEventListener("click", () => {
+      if (!lastViewed) return;
+      toggleConnect(lastViewed);
+      modalConnect.textContent = connections.includes(lastViewed) ? "Conectado" : "Conectar";
+      renderGrid(filterAndSearch());
+    });
+
+    // Message button (simula)
+    modalMsg.addEventListener("click", () => {
+      if (!lastViewed) return;
+      const who = items.find(x => x.id === lastViewed);
+      const msg = prompt(`Enviar mensaje a ${who.name}:`, "");
+      if (msg && msg.trim()) {
+        showToast("Mensaje enviado (simulado)");
+      }
+    });
+
+    // Simular añadir item
+    simAdd.addEventListener("click", () => {
+      const id = Date.now();
+      const sample = {
+        id,
+        type: Math.random() > 0.5 ? "empresa" : "artista",
+        name: Math.random() > 0.5 ? `Empresa ${id.toString().slice(-3)}` : `Artista ${id.toString().slice(-3)}`,
+        location: ["Bogotá", "Medellín", "Cali", "Barranquilla"][Math.floor(Math.random() * 4)],
+        role: Math.random() > 0.5 ? "Sponsor" : "Músico",
+        img: "https://picsum.photos/seed/" + id + "/200",
+        bio: "Perfil simulado para pruebas. Edita datos desde devtools/localStorage.",
+        tags: ["evento", "colaboración", "contratación"].slice(0, Math.floor(Math.random() * 3) + 1),
+        mode: Math.random() > 0.5 ? "local" : "remoto"
+      };
+      items.unshift(sample);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      renderGrid(filterAndSearch());
+      showToast("Elemento simulado agregado");
+    });
+
+    // Mostrar solo conexiones
+    showConnections.addEventListener("click", () => {
+      const list = items.filter(i => connections.includes(i.id));
+      renderGrid(list);
+    });
+
+    // pequeño toast
+    function showToast(text, t = 1600) {
+      const d = document.createElement("div");
+      d.textContent = text;
+      d.style.position = "fixed";
+      d.style.right = "18px";
+      d.style.bottom = "18px";
+      d.style.background = "rgba(0,0,0,0.8)";
+      d.style.color = "#fff";
+      d.style.padding = "10px 14px";
+      d.style.borderRadius = "10px";
+      d.style.zIndex = 999;
+      document.body.appendChild(d);
+      setTimeout(() => d.style.opacity = "0.0", t - 400);
+      setTimeout(() => d.remove(), t);
+    }
+
+    // init render
+    renderGrid();
+  </script>
+  <script>
+  const menuBtn = document.getElementById("menuBtn");
+  const navLinks = document.getElementById("navLinks");
+
+  menuBtn.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+  });
+</script>
+<script>
+  const perfilLink = document.getElementById("perfilLink");
+
+  perfilLink.addEventListener("click", () => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user) {
+      // No está logueado
+      window.location.href = "login.html";
+      return;
+    }
+
+    if (user.role === "organizador") {
+      window.location.href = "perfil-organizador.html";
+    } 
+    else if (user.role === "artista") {
+      window.location.href = "perfil-artista.html";
+    } 
+    else {
+      // Por si algún día hay otro tipo de rol
+      alert("Rol desconocido. Revisa el usuario.");
+    }
+  });
+</script>
+</body>
+
+</html>

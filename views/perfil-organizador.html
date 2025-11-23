@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil Organizador | ConvocArte</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/perfil.css">
+</head>
+
+<body>
+  <header>
+  <nav class="navbar">
+    <div class="nav-container">
+
+      <!-- LOGO (NO SE TOCA) -->
+      <div class="logo">
+        <img src="assets/Imagen de WhatsApp 2025-10-28 a las 14.29.21_f49dac08.jpg" alt="logo">
+        <span>ConvocArte</span>
+      </div>
+
+      <!-- 🔹 AQUÍ solo se arregló el nav interno -->
+      <div class="nav-links" id="navLinks">
+        <a href="eventos.html">Eventos</a>
+        <a href="postulaciones.html">Postulaciones</a>
+        <a href="perfil-organizador.html">Perfil</a>
+        <a href="red.html">Red</a>
+      </div>
+
+      <!-- HAMBURGER (NO SE TOCA) -->
+      <div class="hamburger" id="menuBtn">
+        <span></span><span></span><span></span>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- 🔹 Todo esto debajo queda EXACTAMENTE igual -->
+  <img id="organizerAvatar" src="assets/img/avatar-default.png" alt="Avatar del organizador" class="profile-avatar">
+  <h1>Perfil del Organizador</h1>
+  <p id="welcomeText">Bienvenido, organizador</p>
+
+  <div class="organizer-info-extra">
+    <p><strong>Empresa:</strong> <span id="infoEmpresa">ConectaEventos S.A.S</span></p>
+    <p><strong>Ubicación:</strong> <span id="infoUbicacion">Bogotá, Colombia</span></p>
+    <p><strong>Redes / Contacto:</strong> <span id="infoContacto">contacto@conecta.com | @ConectaEventos</span></p>
+    <p><strong>Descripción:</strong> <span id="infoBio">Organizamos eventos culturales y artísticos, conectando artistas con el público.</span></p>
+    <p id="cvStatus" style="font-size:0.9rem; color:gray; margin-top:6px;">
+      📄 Hoja de vida: <span id="cvFileDisplay">No cargada</span>
+    </p>
+  </div>
+
+  <div style="display: flex; gap: 10px;">
+    <button class="btn logout" id="editProfileBtn">Editar perfil</button>
+    <button class="btn logout" id="logoutBtn">Cerrar sesión</button>
+  </div>
+</header>
+
+
+  <!-- 🔹 Modal para editar perfil -->
+  <div id="editProfileModal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width: 500px;">
+      <h2>Editar Perfil</h2>
+      <form id="editProfileForm">
+        <!-- 📸 Subir foto -->
+        <div class="file-upload">
+          <label class="custom-file-btn">
+            📸 Seleccionar foto
+            <input type="file" id="editFoto" accept="image/*" hidden>
+          </label>
+          <img id="previewFoto" src="assets/img/avatar-default.png" alt="Previsualización"
+            style="width:100px; height:100px; border-radius:50%; margin:10px auto; display:block; object-fit:cover;">
+        </div>
+
+        <!-- Campos normales -->
+        <label>Empresa:</label>
+        <input type="text" id="editEmpresa" required>
+
+        <label>Ubicación:</label>
+        <input type="text" id="editUbicacion" required>
+
+        <label>Redes / Contacto:</label>
+        <input type="text" id="editContacto" required>
+
+        <label>Descripción:</label>
+        <textarea id="editBio" rows="3" required></textarea>
+
+        <!-- 📄 Hoja de vida -->
+        <label for="editCV">📄 Hoja de vida (PDF)</label>
+        <label class="custom-file-btn">
+          📎 Subir archivo
+          <input type="file" id="editCV" accept=".pdf,.doc,.docx" hidden>
+        </label>
+        <p id="cvInfo" style="font-size:0.9rem; color:gray; margin-top:6px;">Ningún archivo seleccionado</p>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+          <button type="button" id="cancelEditBtn" class="btn-modal btn-rechazar">Cancelar</button>
+          <button type="submit" class="btn-modal btn-aceptar">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div id="addEventModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h2>Añadir nuevo evento</h2>
+      <form id="addEventForm">
+        <label>Título del evento</label>
+        <input type="text" id="eventTitle" required>
+
+        <label>Organizador</label>
+        <input type="text" id="eventOrganizer" required>
+
+        <label>Descripción</label>
+        <textarea id="eventDesc" rows="3" required></textarea>
+
+        <label>Requisitos</label>
+        <textarea id="eventReq" rows="2" required></textarea>
+
+        <label>Disciplina</label>
+        <input type="text" id="eventDisc" required>
+
+        <label>Fecha límite</label>
+        <input type="date" id="eventDeadline" required>
+
+        <label>Pago / Beneficio</label>
+        <input type="text" id="eventPago" required>
+
+        <label>Cupos disponibles</label>
+        <input type="number" id="eventCupos" required>
+
+        <label>Imagen</label>
+        <input type="file" id="eventImg" accept="image/*" required>
+
+        <button type="submit">Guardar evento</button>
+        <button type="button" onclick="closeModal()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+
+
+
+  <main>
+    <a href="eventos.html">
+      <h2>Mis eventos publicados</h2>
+    </a>
+    <div class="event-gallery" id="eventGallery"></div>
+
+    <a href="postulaciones.html">
+      <h2>Postulaciones de artistas</h2>
+    </a>
+    <table>
+      <thead>
+        <tr>
+          <th>Artista</th>
+          <th>Evento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="artistTableBody"></tbody>
+    </table>
+  </main>
+
+  <footer>© 2025 ConvocArte. Todos los derechos reservados.</footer>
+  <script>
+    const gallery = document.getElementById("eventGallery"); // 🔹 Asegúrate de tener <div id="eventGallery"></div> en tu HTML
+    const artistTableBody = document.getElementById("artistTableBody"); // 🔹 Asegúrate de tener <tbody id="artistTableBody"></tbody>
+
+    let eventos = JSON.parse(localStorage.getItem("conectaart_eventos")) || [];
+    let postulaciones = JSON.parse(localStorage.getItem("conectaart_postulaciones")) || [];
+
+    function guardarDatos() {
+      localStorage.setItem("conectaart_eventos", JSON.stringify(eventos));
+      localStorage.setItem("conectaart_postulaciones", JSON.stringify(postulaciones));
+      console.log("📦 Eventos guardados:", eventos);
+      console.log("📦 Postulaciones guardadas:", postulaciones);
+    }
+    // 🌟 Insertar una postulación de ejemplo (solo si no hay ninguna)
+    /*if (postulaciones.length === 0) {
+      postulaciones.push({
+        artista: "Luna Rivera",
+        evento: "Festival de Talentos 2025",
+        img: "https://randomuser.me/api/portraits/women/44.jpg",
+        estado: "pendiente"
+      });
+
+      postulaciones.push({
+        artista: "Marco Ruiz",
+        evento: "Noche de Arte Urbano",
+        img: "https://randomuser.me/api/portraits/men/55.jpg",
+        estado: "pendiente"
+      });
+
+      guardarDatos();
+    }*/
+    // 🔹 Renderizar postulaciones dinámicamente
+    function renderPostulaciones() {
+      artistTableBody.innerHTML = "";
+
+      if (postulaciones.length === 0) {
+        artistTableBody.innerHTML = `<tr><td colspan="3"><em>No hay postulaciones aún</em></td></tr>`;
+        return;
+      }
+
+      postulaciones.forEach((p, i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td><img src="${p.img}" alt="${p.artista}" style="width:35px;height:35px;border-radius:50%;margin-right:8px;vertical-align:middle;">${p.userName}</td>
+        <td>${p.eventTitle}</td>
+        <td>
+          ${p.estado === "pendiente"
+            ? `<button onclick="aceptar(${i})" class="btn-modal btn-aceptar">Aceptar</button>
+                 <button onclick="rechazar(${i})" class="btn-modal btn-rechazar">Rechazar</button>`
+            : p.estado === "aceptado"
+              ? "✅ Aceptado"
+              : "❌ Rechazado"
+          }
+        </td>
+      `;
+        artistTableBody.appendChild(row);
+      });
+    }
+
+    function aceptar(i) {
+  postulaciones[i].estado = "aceptado";
+
+  const ev = eventos.find(e => e.id === postulaciones[i].eventId);
+
+  if (ev) {
+    ev.artistas = ev.artistas || [];
+    if (!ev.artistas.includes(postulaciones[i].userName)) {
+      ev.artistas.push(postulaciones[i].userName);
+    }
+  }
+
+  guardarDatos();
+  renderPostulaciones();
+  renderEventos(); // 🔹 Refresca la vista del organizador
+}
+
+
+    function rechazar(i) {
+      postulaciones[i].estado = "rechazado";
+      guardarDatos();
+      renderPostulaciones();
+    }
+
+    document.addEventListener("DOMContentLoaded", renderPostulaciones);
+  </script>
+
+  <script>
+    // Abrir modal
+    function openModal() {
+      document.getElementById("addEventModal").style.display = "flex";
+    }
+
+    // Cerrar modal
+    function closeModal() {
+      document.getElementById("addEventModal").style.display = "none";
+    }
+
+    // Manejar formulario
+    document.getElementById("addEventForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById("eventTitle").value;
+      const organizer = document.getElementById("eventOrganizer").value;
+      const desc = document.getElementById("eventDesc").value;
+      const req = document.getElementById("eventReq").value;
+      const disc = document.getElementById("eventDisc").value;
+      const deadline = document.getElementById("eventDeadline").value;
+      const pago = document.getElementById("eventPago").value;
+      const cupos = parseInt(document.getElementById("eventCupos").value);
+      const file = document.getElementById("eventImg").files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          eventos.push({
+            id: Date.now(), // 🆔 genera un id único basado en el tiempo
+            titulo: title,
+            organizador: organizer.trim(),
+            organizadorEmail: user.email,
+            descripcion: desc,
+            requisitos: req,
+            disciplina: disc,
+            fechaLimite: deadline,
+            pago: pago,
+            cupos: cupos,
+            img: ev.target.result,
+            publicado: true,
+            artistas: []
+          });
+          guardarDatos();   // ✅ mantiene tu lógica de guardado
+          renderEventos();  // ✅ vuelve a renderizar sin tocar nada más
+          closeModal();     // ✅ cierra el modal
+          this.reset();     // ✅ limpia el formulario
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert("Debes seleccionar una imagen.");
+      }
+    });
+    // Funciones existentes
+function togglePublicar(i) {
+  alert("🚧 Función en desarrollo: pronto podrás ocultar o publicar tus eventos.");
+}
+function showNotification(msg, type = "info") {
+  const notif = document.createElement("div");
+  notif.className = `toast ${type}`;
+  notif.textContent = msg;
+  document.body.appendChild(notif);
+  setTimeout(() => notif.classList.add("show"), 10);
+  setTimeout(() => {
+    notif.classList.remove("show");
+    setTimeout(() => notif.remove(), 300);
+  }, 2500);
+}
+
+function eliminarEvento(i) {
+  if (confirm("¿Eliminar evento definitivamente?")) {
+    eventos.splice(i, 1);
+    localStorage.setItem("conectaart_eventos", JSON.stringify(eventos)); // ✅ guarda el cambio
+    renderEventos(); // 🔄 refresca la galería
+    alert("✅ Evento eliminado correctamente");
+  }
+}
+
+    // Render eventos (una sola versión)
+    function renderEventos() {
+      gallery.innerHTML = "";
+      let totalSlots = 6;
+      for (let i = 0; i < totalSlots; i++) {
+        const div = document.createElement("div");
+        div.className = "event-card";
+
+        if (eventos[i]) {
+          let ev = eventos[i];
+          div.innerHTML = `
+    <img src="${ev.img}" alt="${ev.titulo}">
+    <p><b>${ev.titulo}</b></p>
+    <p>${ev.pago} | Artistas: ${ev.cupos}</p>
+<div>
+  <strong>Artistas:</strong> ${ev.artistas && ev.artistas.length ? ev.artistas.length : 0}
+</div>
+    <div>
+      <button class="publish-btn" onclick="togglePublicar(${i})">${ev.publicado ? "Ocultar" : "Publicar"}</button>
+      <button class="delete-btn" onclick="eliminarEvento(${i})">Eliminar</button>
+    </div>
+  `;
+        } else {
+          div.innerHTML = `<p>➕ Añadir evento</p>`;
+          div.style.cursor = "pointer"; // Hace que se vea clicable
+          div.addEventListener("click", openModal); // Toda la tarjeta es clicable
+        }
+
+        gallery.appendChild(div);
+      }
+    }
+
+    // Inicializar
+    renderEventos();
+
+  </script>
+
+  <script>
+
+    // === Sesión y bienvenida ===
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    if (user) {
+      document.getElementById("welcomeText").textContent = `Bienvenido, ${user.name}`;
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("currentUser");
+      window.location.href = "../index.html";
+
+    });
+
+    // === Manejo del modal de edición de perfil ===
+    const editProfileBtn = document.getElementById("editProfileBtn");
+    const editProfileModal = document.getElementById("editProfileModal");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const editProfileForm = document.getElementById("editProfileForm");
+
+    const infoEmpresa = document.getElementById("infoEmpresa");
+    const infoUbicacion = document.getElementById("infoUbicacion");
+    const infoContacto = document.getElementById("infoContacto");
+    const infoBio = document.getElementById("infoBio");
+    const organizerAvatar = document.getElementById("organizerAvatar");
+
+    editProfileBtn.addEventListener("click", () => {
+      document.getElementById("editEmpresa").value = infoEmpresa.textContent;
+      document.getElementById("editUbicacion").value = infoUbicacion.textContent;
+      document.getElementById("editContacto").value = infoContacto.textContent;
+      document.getElementById("editBio").value = infoBio.textContent;
+      document.getElementById("previewFoto").src = organizerAvatar.src;
+
+      // 🔹 Mostrar nombre del archivo guardado (si existe)
+      const saved = JSON.parse(localStorage.getItem("organizerInfo"));
+      const cvInfo = document.getElementById("cvInfo");
+      if (saved && saved.cv) {
+        cvInfo.textContent = `Archivo guardado: ${saved.cv}`;
+        cvInfo.style.color = "#4a47a3";
+      } else {
+        cvInfo.textContent = "Ningún archivo seleccionado";
+        cvInfo.style.color = "gray";
+      }
+
+      editProfileModal.style.display = "flex";
+    });
+
+
+    // Cerrar modal
+    cancelEditBtn.addEventListener("click", () => {
+      editProfileModal.style.display = "none";
+    });
+
+    // Previsualizar imagen
+    document.getElementById("editFoto").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          document.getElementById("previewFoto").src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+
+    // Guardar cambios
+    editProfileForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // === Crear objeto base ===
+      const organizerInfo = {
+        empresa: document.getElementById("editEmpresa").value,
+        ubicacion: document.getElementById("editUbicacion").value,
+        contacto: document.getElementById("editContacto").value,
+        bio: document.getElementById("editBio").value,
+        foto: document.getElementById("previewFoto").src,
+      };
+
+      // === Guardar hoja de vida (solo el nombre del archivo) ===
+      const cvFile = document.getElementById("editCV").files[0];
+      if (cvFile) {
+        organizerInfo.cv = cvFile.name;
+      } else {
+        // Si no se selecciona uno nuevo, conservar el anterior (si existe)
+        const saved = JSON.parse(localStorage.getItem("organizerInfo"));
+        if (saved && saved.cv) organizerInfo.cv = saved.cv;
+      }
+
+      // === Guardar en localStorage ===
+      localStorage.setItem("organizerInfo", JSON.stringify(organizerInfo));
+
+      // === Actualizar UI visible ===
+      infoEmpresa.textContent = organizerInfo.empresa;
+      infoUbicacion.textContent = organizerInfo.ubicacion;
+      infoContacto.textContent = organizerInfo.contacto;
+      infoBio.textContent = organizerInfo.bio;
+      organizerAvatar.src = organizerInfo.foto;
+      if (organizerInfo.cv) {
+        document.getElementById("cvInfo").textContent = `Archivo guardado: ${organizerInfo.cv}`;
+        document.getElementById("cvInfo").style.color = "#4a47a3";
+      }
+
+      // === Cerrar modal ===
+      editProfileModal.style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 400); // le damos un mini delay para que cierre suavemente el modal
+    });
+
+    // Cargar datos guardados al iniciar
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = JSON.parse(localStorage.getItem("organizerInfo"));
+
+      if (saved) {
+        infoEmpresa.textContent = saved.empresa;
+        infoUbicacion.textContent = saved.ubicacion;
+        infoContacto.textContent = saved.contacto;
+        infoBio.textContent = saved.bio;
+        if (saved.foto) organizerAvatar.src = saved.foto;
+
+        // 🔹 Mostrar CV en el perfil
+        const cvFileDisplay = document.getElementById("cvFileDisplay");
+        const cvStatus = document.getElementById("cvStatus");
+        if (saved.cv) {
+          cvFileDisplay.textContent = saved.cv;
+          cvStatus.style.color = "#4a47a3";
+        } else {
+          cvFileDisplay.textContent = "No cargada";
+          cvStatus.style.color = "gray";
+        }
+      }
+
+      if (user) {
+        document.getElementById("welcomeText").textContent = `Bienvenido, ${user.name}`;
+      }
+      // 📸 Foto de perfil
+      const editFoto = document.getElementById("editFoto");
+      const previewFoto = document.getElementById("previewFoto");
+
+      editFoto.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            previewFoto.src = ev.target.result; // muestra la foto
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // 📄 Hoja de vida (PDF o DOC)
+      const editCV = document.getElementById("editCV");
+      const cvInfo = document.getElementById("cvInfo");
+
+      editCV.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          cvInfo.textContent = `Archivo seleccionado: ${file.name}`;
+        } else {
+          cvInfo.textContent = "Ningún archivo seleccionado";
+        }
+      });
+      // Si el usuario no tiene hoja de vida cargada, mostrar modal automáticamente
+      if (!saved || !saved.cv) {
+        alert("Por último, carga tu hoja de vida. Si no es tu primera vez, puedes omitir este paso.");
+        setTimeout(() => {
+          editProfileModal.style.display = "flex";
+        }, 800);
+      }
+    });
+
+  </script>
+
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const navLinks = document.getElementById("navLinks");
+
+  menuBtn.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+  });
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil del Artista | ConvocArte</title>
+  <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/perfil-artista.css">
+</head>
+<body>
+  <header>
+     <nav class="navbar">
+    <div class="nav-container">
+
+      <!-- LOGO (NO SE TOCA) -->
+      <div class="logo">
+        <img src="assets/Imagen de WhatsApp 2025-10-28 a las 14.29.21_f49dac08.jpg" alt="logo">
+        <span>ConvocArte</span>
+      </div>
+
+      <!-- 🔹 AQUÍ solo se arregló el nav interno -->
+      <div class="nav-links" id="navLinks">
+        <a href="eventos.html">Eventos</a>
+        <a href="postulaciones.html">Postulaciones</a>
+        <a href="perfil-artista.html">Perfil</a>
+        <a href="red.html">Red</a>
+      </div>
+
+      <!-- HAMBURGER (NO SE TOCA) -->
+      <div class="hamburger" id="menuBtn">
+        <span></span><span></span><span></span>
+      </div>
+
+    </div>
+  </nav>
+    <img id="artistAvatar" src="assets/img/avatar-default.png" alt="Avatar del artista" class="profile-avatar">
+    <h1>Perfil del Artista</h1>
+    <p id="welcomeText">Bienvenido, artista</p>
+
+    <div class="artist-info">
+      <p><strong>Especialidad:</strong> <span id="infoEspecialidad">Pintura y Escultura</span></p>
+      <p><strong>Ubicación:</strong> <span id="infoUbicacion">Bogotá, Colombia</span></p>
+      <p><strong>Redes:</strong> <span id="infoRedes">Instagram | Twitter</span></p>
+      <p><strong>Biografía:</strong> <span id="infoBio">Apasionado por el arte contemporáneo...</span></p>
+      <p id="cvFileDisplay" style="font-size:0.9rem; color:gray; margin-top:6px;">
+        📄 No cargada
+      </p>
+
+    </div>
+
+    <div style="display: flex; gap: 10px; justify-content:center; margin-top:10px;">
+      <button class="btn logout" id="editProfileBtn">Editar perfil</button>
+      <button class="btn logout" id="logoutBtn">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <!-- Modal Editar Perfil -->
+  <div id="editProfileModal">
+    <div class="modal-content">
+      <h2>Editar Perfil</h2>
+      <form id="editProfileForm">
+        <label></label>
+        <div class="file-upload">
+          <label for="editFoto" class="custom-file-btn">📸 Seleccionar foto</label>
+          <input type="file" id="editFoto" accept="image/*" hidden>
+          <span id="fileName" class="file-name"></span>
+                  <img id="previewFoto" src="assets/img/avatar-default.png" alt="Previsualización">
+
+        </div>
+
+
+        <label>Especialidad:</label>
+        <select id="editEspecialidad" required>
+          <option value="Musica">Música</option>
+          <option value="Danza">Danza</option>
+          <option value="Teatro">Teatro</option>
+          <option value="Fotografia">Fotografía</option>
+          <option value="Artes Plásticas">Artes Plásticas</option>
+          <option value="Cine">Cine</option>
+          <option value="Modelaje">Modelaje</option>
+          <option value="Diseño Gráfico">Diseño Gráfico</option>
+        </select>
+
+        <label>Ubicación:</label>
+        <input type="text" id="editUbicacion" required>
+
+        <label>Redes:</label>
+        <input type="text" id="editRedes" required>
+
+        <label>Biografía:</label>
+        <textarea id="editBio" rows="3" required></textarea>
+
+        <!-- 📄 Hoja de vida -->
+        <label for="editCV">📄 Hoja de vida (PDF o DOC)</label>
+        <div style="display: flex; flex-direction: column; align-items: start;" class="file-upload">
+          <label for="editCV" class="custom-file-btn">📎 Subir archivo</label>
+          <input type="file" id="editCV" accept=".pdf,.doc,.docx" hidden>
+          <p id="cvInfo" style="font-size:0.9rem; color:gray; margin-top:6px;">
+            Ningún archivo seleccionado
+          </p>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+          <button type="button" class="btn-modal btn-cancelar" id="cancelEditBtn">Cancelar</button>
+          <button type="submit" class="btn-modal btn-guardar">Guardar</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+ <div id="addPortfolioModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h2>Añadir al Portafolio</h2>
+      <form id="portfolioForm">
+        <label>Título de la obra:</label>
+        <input type="text" id="portfolioTitle" required>
+
+        <label>Descripción:</label>
+        <textarea id="portfolioDescription" rows="3" required></textarea>
+
+        <label>Imagen:</label>
+        <div class="file-upload">
+          <label for="portfolioImage" class="custom-file-btn">📸 Subir imagen</label>
+          <input type="file" id="portfolioImage" accept="image/*" hidden>
+          <p id="portfolioFileInfo" style="font-size:0.9rem; color:gray;">Ningún archivo seleccionado</p>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+          <button type="button" class="btn-modal btn-rechazar" id="cancelPortfolioBtn">Cancelar</button>
+          <button type="submit" class="btn-modal btn-aceptar">Añadir</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <main>
+    <h2 style="color: var(--accent); text-align:center; margin-top:2rem;">🎨 Mi Portafolio</h2>
+    <div class="portfolio" id="portfolioGrid"></div>
+    <p style="text-align:center; color: var(--text-muted); font-size:0.9rem; margin-bottom:20px;">
+      Incluye imágenes de tus obras o carátulas de tus discos.
+    </p>
+    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+
+    <div class="section-grid">
+      <div class="card">
+        <h2>🎭 Eventos Disponibles</h2>
+        <p>Descubre eventos y oportunidades donde puedes participar y mostrar tu arte.</p>
+        <a href="views/eventos.html">Ir a eventos →</a>
+      </div>
+
+      <div class="card">
+        <h2>📋 Mis Postulaciones</h2>
+        <p>Revisa el estado de tus postulaciones y el avance en los procesos de selección.</p>
+        <a href="views/postulaciones.html">Ver postulaciones →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2025 ConvocArte</footer>
+
+
+<script src="js/perfil-artista.js"></script>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const navLinks = document.getElementById("navLinks");
+
+  menuBtn.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+  });
+</script>
+</body>
+
+</html>

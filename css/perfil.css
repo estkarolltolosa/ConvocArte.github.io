@@ -1,0 +1,487 @@
+  
+    :root {
+      --bg: #f8f9fa;
+      --card-bg: #fff;
+      --text: #212529;
+      --muted: #6c757d;
+      --accent: #4a47a3;
+      /* Morado */
+      --success: #10b981;
+      --danger: #ef4444;
+      --border: #dee2e6;
+      --radius: 12px;
+    }
+
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+    }
+
+    header {
+      background: var(--card-bg);
+      padding:  0rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      
+    }
+
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+    }
+
+    header h1 {
+      color: var(--accent);
+      margin: 5px 0;
+    }
+    
+
+    #welcomeText {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .organizer-info-extra {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .btn.logout {
+      margin-bottom: 10px;
+      margin-top: 10px;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn.logout:hover {
+      opacity: 0.85;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--accent);
+      padding-left: 8px;
+    }
+    a{
+        text-decoration: none;
+        color:var(--text);
+    }
+    /* Galería de eventos */
+    .event-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .event-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      padding: 0.5rem;
+      text-align: center;
+      transition: 0.2s;
+    }
+
+    .event-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      margin-bottom: 0.5rem;
+    }
+
+    .event-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .event-card button {
+      margin-top: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .publish-btn {
+      background: var(--accent);
+      color: #fff;
+      margin-right: 0.3rem;
+    }
+
+    .delete-btn {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    /* Tabla de postulaciones */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    th,
+    td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f1f3f5;
+    }
+
+    td img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    td span {
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-right: 0.3rem;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 2rem 0 1rem;
+    }
+
+    /* Modal general */
+    #addEventModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      cursor: default;
+      display: flex;
+      /* para centrar */
+    }
+
+    /* Contenido del modal */
+    #addEventModal>div {
+      background: var(--card-bg);
+      padding: 20px 25px;
+      border-radius: var(--radius);
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Título */
+    #addEventModal h3 {
+      color: var(--accent);
+      margin: 0 0 10px 0;
+      text-align: center;
+    }
+
+    /* Inputs y textarea */
+    #addEventModal input,
+    #addEventModal textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    #addEventModal input:focus,
+    #addEventModal textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 5px rgba(74, 71, 163, 0.4);
+    }
+
+    /* Botones */
+    #addEventModal button {
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    #addEventModal button:hover {
+      opacity: 0.85;
+    }
+
+    #addEventModal .btn-cancel {
+      background: var(--muted);
+      color: #fff;
+    }
+
+    #addEventModal .btn-add {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Hacer pointer el texto de añadir evento */
+    .event-card p {
+      cursor: pointer;
+    }
+
+    /* Fondo y centrado del modal */
+    #editProfileModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      /* Por defecto oculto */
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    /* Mostrar modal cuando tenga clase 'active' */
+    #editProfileModal.active {
+      display: flex;
+    }
+
+    /* Contenido del modal */
+    #editProfileModal .modal-content {
+      background: var(--card-bg, #fff);
+      padding: 20px 30px;
+      border-radius: var(--radius, 10px);
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Formulario dentro del modal */
+    #editProfileModal form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Inputs y textarea */
+    #editProfileModal input[type="text"],
+    #editProfileModal input[type="email"],
+    #editProfileModal textarea {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: var(--radius, 6px);
+      border: 1px solid var(--border, #ccc);
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    #editProfileModal input[type="text"]:focus,
+    #editProfileModal input[type="email"]:focus,
+    #editProfileModal textarea:focus {
+      border-color: var(--accent, #4a47a3);
+      box-shadow: 0 0 5px rgba(74, 71, 163, 0.4);
+    }
+
+    /* Botones */
+    #editProfileModal .btn-modal {
+      padding: 10px 16px;
+      border: none;
+      border-radius: var(--radius, 6px);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+
+    #editProfileModal .btn-rechazar {
+      background-color: var(--muted, #999);
+      color: #fff;
+    }
+
+    #editProfileModal .btn-aceptar {
+      background-color: var(--accent, #4a47a3);
+      color: #fff;
+    }
+
+    #editProfileModal .btn-modal:hover {
+      opacity: 0.85;
+    }
+
+    /* Imagen de previsualización */
+    #previewFoto {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 10px auto;
+      display: block;
+      border: 2px solid var(--accent, #4a47a3);
+    }
+
+    .file-upload {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .custom-file-btn {
+      display: inline-block;
+      background-color: #4a47a3;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: 0.2s ease;
+    }
+
+    .custom-file-btn:hover {
+      background-color: #37349b;
+      transform: scale(1.02);
+    }
+/* === SOLO NAVBAR, NO MODIFICA EL HEADER === */
+
+.navbar {
+  color: white;
+  background: transparent; /* respeta el header */
+  width: 100%;
+        background: linear-gradient(90deg,var(--accent),#6f66d9);
+
+}
+
+.nav-container {
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+}
+
+/* LOGO DEL NAV (respeta estilos existentes) */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.logo img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+/* ENLACES DEL NAV */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;          /* respeta tu header blanco */
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+  opacity: 0.8;
+}
+
+/* HAMBURGER */
+.hamburger {
+ 
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: rgba(0,0,0,0.25);  /* sutil, NO cambia el header */
+    backdrop-filter: blur(4px);
+    position: absolute;
+    top: 40px;
+    right:-16px ;
+    width: 200px;
+    border-radius: 0 0 0 12px;
+    padding: 12px;
+  }
+
+  .nav-links.open {
+    display: flex;
+    margin-top: 20px;
+    margin-right: 16px;
+    background-color: #6f66d9;
+  }
+
+  .hamburger {
+    
+    color: #212529;
+    display: flex;
+  }
+}

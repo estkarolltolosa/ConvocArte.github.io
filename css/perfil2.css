@@ -1,0 +1,357 @@
+  
+    :root {
+      --bg: #f8f9fa;
+      --card-bg: #fff;
+      --text: #212529;
+      --muted: #6c757d;
+      --accent: #4a47a3;
+      /* Morado */
+      --success: #10b981;
+      --danger: #ef4444;
+      --border: #dee2e6;
+      --radius: 12px;
+    }
+
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+    }
+
+    header {
+      background: var(--card-bg);
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+    }
+
+    header h1 {
+      color: var(--accent);
+      margin: 5px 0;
+    }
+    
+
+    #welcomeText {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .artist-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+      max-width: 400px;
+    }
+
+
+    .btn.logout {
+      margin-top: 10px;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn.logout:hover {
+      opacity: 0.85;
+    }
+ /* Fondo y centrado del modal */
+    #editProfileModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      /* Por defecto oculto */
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    /* Mostrar modal cuando tenga clase 'active' */
+    #editProfileModal.active {
+      display: flex;
+    }
+
+    /* Contenido del modal */
+    #editProfileModal .modal-content {
+      background: var(--card-bg, #fff);
+      padding: 20px 30px;
+      border-radius: var(--radius, 10px);
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Formulario dentro del modal */
+    #editProfileModal form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Inputs y textarea */
+    #editProfileModal input[type="text"],
+    #editProfileModal input[type="email"],
+    #editProfileModal textarea {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: var(--radius, 6px);
+      border: 1px solid var(--border, #ccc);
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    #editProfileModal input[type="text"]:focus,
+    #editProfileModal input[type="email"]:focus,
+    #editProfileModal textarea:focus {
+      border-color: var(--accent, #4a47a3);
+      box-shadow: 0 0 5px rgba(74, 71, 163, 0.4);
+    }
+
+    /* Botones */
+    #editProfileModal .btn-modal {
+      padding: 10px 16px;
+      border: none;
+      border-radius: var(--radius, 6px);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+
+    #editProfileModal .btn-rechazar {
+      background-color: var(--muted, #999);
+      color: #fff;
+    }
+
+    #editProfileModal .btn-aceptar {
+      background-color: var(--accent, #4a47a3);
+      color: #fff;
+    }
+
+    #editProfileModal .btn-modal:hover {
+      opacity: 0.85;
+    }
+
+    /* Imagen de previsualización */
+    #previewFoto {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 10px auto;
+      display: block;
+      border: 2px solid var(--accent, #4a47a3);
+    }
+
+    .file-upload {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .custom-file-btn {
+      display: inline-block;
+      background-color: #4a47a3;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: 0.2s ease;
+    }
+
+    .custom-file-btn:hover {
+      background-color: #37349b;
+      transform: scale(1.02);
+    }
+ /* === GALERÍA DE PORTAFOLIO (solo imágenes) === */
+
+.portfolio {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.portfolio-item {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #f0f0f0;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.portfolio-item:hover {
+  border-color: var(--accent);
+  transform: scale(1.02);
+  background-color: #f9f9ff;
+}
+
+.portfolio-item img {
+  width: 100%;
+  z-index: 2;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.portfolio-item::after {
+  content: "+";
+  z-index: 1;
+  font-size: 2rem;
+  color: var(--muted);
+  position: absolute;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.portfolio-item.has-image::after {
+  content: "";
+}
+
+.portfolio-item:hover::after {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+  .portfolio {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* === SECCIONES DESPUÉS DEL PORTAFOLIO === */
+
+.section-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  border-top: 1px solid var(--border);
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 1.8rem 1.5rem;
+  width: 320px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(circle at top left, rgba(74, 71, 163, 0.05), transparent 70%);
+  z-index: 0;
+}
+
+.card h2 {
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+  font-size: 1.3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.card a {
+  display: inline-block;
+  color: #fff;
+  background: var(--accent);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.card a:hover {
+  background: #3a3794;
+  transform: scale(1.05);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  background: var(--card-bg);
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 1.2rem;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 768px) {
+  .section-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+  }
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión | ConvocArte</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="register-container">
+    <div class="register-card">
+      <h1>👋 Bienvenido</h1>
+      <p class="subtitle">Inicia sesión para continuar en <strong>ConvocArte</strong></p>
+
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" placeholder="ejemplo@email.com" required />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" placeholder="••••••••" required />
+        </div>
+
+        <button type="submit" class="btn primary">Entrar</button>
+      </form>
+
+      <p class="redirect-text">
+        ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
+      </p>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

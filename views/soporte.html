@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ConvocARTE - Soporte y Ayuda</title>
+
+  <!-- Fuente -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --card-bg: #fff;
+      --text: #212529;
+      --muted: #6c757d;
+      --accent: #4a47a3;
+      --border: #dee2e6;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(90deg, var(--accent), #6f66d9);
+      padding: 0rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav-container {
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+    }
+
+    .logo {
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover {
+      opacity: 0.8;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3.2px;
+      background: white;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        
+        position: absolute;
+         top: 40px;
+    right:-16px ;
+        width: 200px;
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .nav-links.open {
+        display: flex;
+            display: flex;
+    margin-top: 20px;
+    margin-right: 16px;
+    background-color: #6f66d9;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* Contenido */
+    .wrap {
+      max-width: 1000px;
+      margin: 28px auto;
+      padding: 18px;
+    }
+
+    h1 {
+      color: var(--accent);
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .faq-card {
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: var(--radius);
+      box-shadow: 0 6px 18px rgba(20, 20, 40, 0.05);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .faq-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .faq-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-answer {
+      display: none;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .contact-box {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f3f4fb;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .contact-box h2 {
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+      margin-top: 12px;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <nav>
+      <div class="nav-container">
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <img src="assets/Imagen de WhatsApp 2025-10-28 a las 14.29.21_f49dac08.jpg" alt="logo"
+            style="width:40px;height:40px;border-radius:8px;object-fit:cover;">
+          <div class="logo">ConvocArte</div>
+        </div>
+
+        <div class="nav-links" id="navLinks">
+          <a href="eventos.html">Eventos</a>
+          <a href="postulaciones.html">Postulaciones</a>
+           <a href="#" id="perfilLink">Perfil</a>
+          <a href="soporte.html">Soporte</a>
+          <a href="red.html">Red</a>
+        </div>
+
+        <div class="hamburger" id="menuBtn">
+          <span></span><span></span><span></span>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+
+  <div class="wrap">
+
+    <h1>Soporte y Ayuda</h1>
+
+    <!-- FAQ -->
+    <div class="faq-card">
+      <div class="faq-question">
+        ¿Cómo conecto con otra empresa o artista?
+        <span>+</span>
+      </div>
+      <div class="faq-answer">
+        Ve a la sección “Red de contactos”, selecciona el perfil que te interese y presiona el botón **Conectar**.  
+        La conexión se guarda automáticamente en tus contactos.
+      </div>
+    </div>
+
+    <div class="faq-card">
+      <div class="faq-question">
+        ¿Cómo me postulo a un evento?
+        <span>+</span>
+      </div>
+      <div class="faq-answer">
+        Entra a **Eventos**, abre el evento de tu interés y presiona el botón “Postularme”.  
+        Recibirás una confirmación inmediata.
+      </div>
+    </div>
+
+    <div class="faq-card">
+      <div class="faq-question">
+        ¿Puedo editar mi perfil?
+        <span>+</span>
+      </div>
+      <div class="faq-answer">
+        Sí. Ve a la sección **Perfil**, donde podrás cambiar tu biografía, fotos, tags y datos de contacto.
+      </div>
+    </div>
+
+    <div class="faq-card">
+      <div class="faq-question">
+        No recibo notificaciones, ¿qué hago?
+        <span>+</span>
+      </div>
+      <div class="faq-answer">
+        Asegúrate de que tu navegador permite mostrar notificaciones y que ConvocArte está autorizado.  
+        También revisa tu conexión a internet.
+      </div>
+    </div>
+
+    <div class="faq-card">
+      <div class="faq-question">
+        ¿Cómo elimino una conexión?
+        <span>+</span>
+      </div>
+      <div class="faq-answer">
+        En la Red de contactos, presiona el botón “Conectado” para revertir la solicitud.  
+        La persona se eliminará de tu lista de contactos.
+      </div>
+    </div>
+
+    <!-- Contacto directo -->
+    <div class="contact-box">
+      <h2>¿Necesitas más ayuda?</h2>
+      <p>Puedes contactarte con nuestro equipo de soporte. Respondemos en menos de 24 horas.</p>
+      <button class="btn" onclick="openMail()">Contactar soporte</button>
+    </div>
+
+  </div>
+
+  <script>
+    // FAQ toggle
+    document.querySelectorAll(".faq-card").forEach(card => {
+      card.addEventListener("click", () => {
+        const ans = card.querySelector(".faq-answer");
+        const icon = card.querySelector(".faq-question span");
+        const open = ans.style.display === "block";
+        ans.style.display = open ? "none" : "block";
+        icon.textContent = open ? "+" : "-";
+      });
+    });
+
+    // Email
+    function openMail() {
+      window.location.href = "mailto:soporte@convocarte.com?subject=Necesito ayuda";
+    }
+
+    // Hamburguesa menú
+    const menuBtn = document.getElementById("menuBtn");
+    const navLinks = document.getElementById("navLinks");
+    menuBtn.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+  </script>
+<script>
+  const perfilLink = document.getElementById("perfilLink");
+
+  perfilLink.addEventListener("click", () => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user) {
+      // No está logueado
+      window.location.href = "login.html";
+      return;
+    }
+
+    if (user.role === "organizador") {
+      window.location.href = "perfil-organizador.html";
+    } 
+    else if (user.role === "artista") {
+      window.location.href = "perfil-artista.html";
+    } 
+    else {
+      // Por si algún día hay otro tipo de rol
+      alert("Rol desconocido. Revisa el usuario.");
+    }
+  });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio | ConvocArte</title>
+  <link rel="stylesheet" href="css/styles.css">
+ <link rel="stylesheet" href= "css/index-modal.css">
+</head>
+<body>
+<!-- PRELOADER CINEMÁTICO -->
+<div id="preloader">
+  <div class="particles"></div>
+
+  <div class="preloader-content">
+    <img src="assets/ConvocArte.png" class="preloader-logo">
+    <h1 class="preloader-title">ConvocArte</h1>
+
+    <div class="loader-bar">
+      <div class="loader-progress"></div>
+    </div>
+  </div>
+</div>
+
+
+
+  <main class="home-container">
+    <div class="logo-section">
+      <img src="assets/Imagen de WhatsApp 2025-10-28 a las 14.29.21_f49dac08.jpg" alt="Logo" class="logo">
+      <h1>ConvocArte</h1>
+      <p>Une artistas con organizadores de eventos.</p>
+    </div>
+
+    <div class="button-section">
+      <button class="btn artista" id="btn-artista">
+        🎨 Soy Artista
+      </button>
+      <button class="btn organizador" id="btn-organizador">
+        🎤 Soy Organizador
+      </button>
+    </div>
+
+    <footer>
+      <p>© 2025 ConvocArte. Todos los derechos reservados.</p>
+    </footer>
+  </main>
+
+  <!-- Modal de Términos y Condiciones -->
+  <div class="modal" id="modal-terminos">
+    <div class="modal-content">
+      <h2>Términos y Condiciones</h2>
+      <p>
+        Antes de continuar, debes aceptar nuestros Términos y Condiciones de uso.
+        ConvocArte se compromete a proteger tu información y ofrecerte una experiencia segura.
+        Al aceptar, confirmas que has leído y comprendes nuestras políticas de privacidad y uso del servicio.
+      </p>
+      <div class="modal-buttons">
+        <button class="btn-modal btn-aceptar" id="btn-aceptar">Aceptar</button>
+        <button class="btn-modal btn-rechazar" id="btn-rechazar">Rechazar</button>
+      </div>
+    </div>
+  </div>
+
+<script src="js/index-modal.js"></script>
+<script>
+  window.addEventListener("load", () => {
+    const preloader = document.getElementById("preloader");
+
+    setTimeout(() => {
+      preloader.classList.add("fade-out");
+      setTimeout(() => preloader.style.display = "none", 1000);
+    }, 2500); // Duración del preloader
+  });
+</script>
+
+</body>
+</html>

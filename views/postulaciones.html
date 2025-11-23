@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConvocARTE - Postulaciones</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    body {
+      background: #f4f5f7;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+    }
+
+    :root {
+      --bg: #f6f7fb;
+      --card: #fff;
+      --accent: #4a47a3;
+      --muted: #6b7280;
+      --text: #222;
+      --radius: 12px;
+      --shadow: 0 6px 20px rgba(60, 60, 90, 0.06);
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--accent), #6f66d9);
+      color: white;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    nav a:hover {
+      opacity: 0.8;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: white;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+       
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        border-radius: 0 0 0 12px;
+        padding: 12px;
+      }
+
+      nav.open {
+        display: flex;
+        
+         background: #6f66d9;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    .container {
+
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4a47a3;
+      font-size: 1.8em;
+      margin-bottom: 25px;
+    }
+
+    .post-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .post-card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-info {
+      flex: 1;
+    }
+
+    .post-info h3 {
+      margin: 0;
+      color: #333;
+    }
+
+    .post-info p {
+      margin: 5px 0;
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .post-status {
+      background: #4a47a3;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 500;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      text-align: center;
+      padding: 14px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      border-top: 1px solid #e6e6e6;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    @media (max-width: 700px) {
+      .post-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .post-status {
+        margin-top: 10px;
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <img src="assets/Imagen de WhatsApp 2025-10-28 a las 14.29.21_f49dac08.jpg" alt="logo">
+        <span>ConvocArte</span>
+      </div>
+      <nav>
+
+        <a href="eventos.html">Eventos</a>
+        <a href="postulaciones.html">Postulaciones</a>
+        <a href="#" id="perfilLink">Perfil</a>
+        <a href="red.html">Red</a>
+        <a href="soporte.html">Soporte</a>
+      </nav>
+      <div class="hamburger" id="menuBtn">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <h1>Postulaciones</h1>
+    <div id="postList"></div>
+  </div>
+
+  <footer>
+    © 2025 ConvocARTE | Conectando artistas y oportunidades 🎭
+  </footer>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const postulaciones = JSON.parse(localStorage.getItem("conectaart_postulaciones")) || [];
+    const eventos = JSON.parse(localStorage.getItem("conectaart_eventos")) || [];
+    const postList = document.getElementById("postList");
+
+    if (!user) {
+      postList.innerHTML = "<p style='text-align:center; color:#555;'>⚠️ Debes iniciar sesión para ver tus postulaciones.</p>";
+    } else {
+      renderPostulaciones();
+    }
+
+    function renderPostulaciones() {
+      postList.innerHTML = "";
+      if (user.role === "artista") {
+        const mias = postulaciones.filter(p => p.userName === user.name);
+        if (mias.length === 0) {
+          postList.innerHTML = "<p style='text-align:center;'>Aún no te has postulado a ningún evento.</p>";
+          return;
+        }
+        mias.forEach(p => {
+          const ev = eventos.find(e => e.id === p.eventId);
+          if (!ev) return;
+          const card = document.createElement("div");
+          card.className = "post-card";
+          card.innerHTML = `
+            <div class="post-info">
+              <h3>${ev.titulo}</h3>
+              <p><strong>Organizador:</strong> ${ev.organizador}</p>
+              <p><strong>Disciplina:</strong> ${ev.disciplina}</p>
+              <p><strong>Pago:</strong> ${ev.pago}</p>
+            </div>
+            <div class="post-status">Enviada ✅</div>
+          `;
+          postList.appendChild(card);
+        });
+      } else if (user.role === "organizador") {
+
+        const mios = eventos.filter(ev => ev.organizadorEmail === user.email);
+
+        if (mios.length === 0) {
+          postList.innerHTML = "<p style='text-align:center;'>Aún no has publicado eventos con postulaciones.</p>";
+          return;
+        }
+        mios.forEach(ev => {
+          const postulados = postulaciones.filter(p => p.eventId === ev.id);
+          const card = document.createElement("div");
+          card.className = "post-card";
+          card.innerHTML = `
+            <div class="post-info">
+              <h3>${ev.titulo}</h3>
+              <p><strong>Postulantes:</strong> ${postulados.length > 0 ? postulados.map(p => p.userName).join(", ") : "Ninguno aún"}</p>
+            </div>
+            <div class="post-status">${postulados.length} Postulaciones</div>
+          `;
+          postList.appendChild(card);
+        });
+      } else {
+        postList.innerHTML = "<p style='text-align:center;'>Tu rol no es válido. Revisa tu perfil.</p>";
+      }
+    }
+  </script>
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const nav = document.querySelector("nav");
+    menuBtn.onclick = () => nav.classList.toggle("open");
+
+  </script>
+  <script>
+  const perfilLink = document.getElementById("perfilLink");
+
+  perfilLink.addEventListener("click", () => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user) {
+      // No está logueado
+      window.location.href = "login.html";
+      return;
+    }
+
+    if (user.role === "organizador") {
+      window.location.href = "perfil-organizador.html";
+    } 
+    else if (user.role === "artista") {
+      window.location.href = "perfil-artista.html";
+    } 
+    else {
+      // Por si algún día hay otro tipo de rol
+      alert("Rol desconocido. Revisa el usuario.");
+    }
+  });
+</script>
+</body>
+
+</html>

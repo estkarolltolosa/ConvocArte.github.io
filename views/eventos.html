@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Eventos | ConvocArte</title>
+  <link rel="stylesheet" href="css/eventos.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <img src="assets/Imagen de WhatsApp 2025-10-28 a las 14.29.21_f49dac08.jpg" alt="logo">
+        <span>ConvocArte</span>
+      </div>
+      <nav>
+
+        <a href="eventos.html">Eventos</a>
+        <a href="postulaciones.html">Postulaciones</a>
+        <a href="#" id="perfilLink">Perfil</a>
+        <a href="red.html">Red</a>
+        <a href="soporte.html">Soporte</a>
+      </nav>
+      <div class="hamburger" id="menuBtn">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Convocatorias y oportunidades</h1>
+    <p>Descubre eventos, revisa requisitos y postúlate fácilmente.</p>
+  </section>
+
+  <main>
+    <section id="feed"></section>
+    <aside>
+      <div class="panel">
+        <h3>Filtrar</h3>
+        <p class="small">Busca por disciplina o palabra clave.</p>
+        <input id="filterInput" placeholder="Ej: música, teatro, pago"
+          style="width:100%;padding:8px;border-radius:8px;border:1px solid #e6e6f2">
+      </div>
+      <div class="panel">
+        <h3>Cómo funciona</h3>
+        <p class="small">El organizador publica eventos y los artistas pueden postularse.
+          Si te interesa, abre "Ver detalles" y pulsa "Postularme".</p>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-card">
+      <button id="closeBtn" class="close-x">✕</button>
+      <img id="mImg" src="" alt="">
+      <h2 id="mTitle"></h2>
+      <div class="organizer" id="mOrg"></div>
+      <p id="mDesc"></p>
+      <p><strong>📋 Requisitos</strong><br><span id="mReq"></span></p>
+      <p><strong>💰 Honorarios / Beneficios</strong><br><span id="mPay"></span></p>
+      <p><strong>📅 Fecha límite</strong><br><span id="mDeadline"></span></p>
+      <p><strong>🎯 Disciplina</strong><br><span id="mDisc"></span></p>
+      <div style="text-align:right;margin-top:14px">
+        <button id="applyBtn" class="btn">Postularme</button>
+        <button id="closeBtn2" class="btn secondary">Cerrar</button>
+      </div>
+    </div>
+  </div>
+  <!-- Modal de documentos adicionales -->
+  <div id="docsModal" class="modal">
+    <div class="modal-content">
+      <span class="closeDocs">&times;</span>
+      <h2>📁 Documentos adicionales</h2>
+      <p>Adjunta hasta 3 archivos relevantes (PDF o imágenes).</p>
+
+      <div class="file-upload">
+        <label class="custom-file-btn" for="extraDocs">📤 Seleccionar documentos click aca</label>
+        <input type="file" id="extraDocs" accept=".pdf, .jpg, .jpeg, .png" multiple hidden>
+        <ul id="selectedFiles" class="file-list"></ul>
+      </div>
+
+      <button id="submitDocs" class="btn-primary">Enviar y finalizar</button>
+    </div>
+  </div>
+  <footer>© 2025 ConvocArte. Todos los derechos reservados.</footer>
+
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const nav = document.querySelector("nav");
+    menuBtn.onclick = () => nav.classList.toggle("open");
+
+    const EVENTS_KEY = "conectaart_eventos";
+    const FAV_KEY = "conectaart_favs";
+    const APPS_KEY = "conectaart_postulaciones";
+
+    // Si no hay nada aún, inicializa vacío
+    if (!localStorage.getItem(EVENTS_KEY)) {
+      localStorage.setItem(EVENTS_KEY, JSON.stringify([]));
+    }
+
+    let eventos = JSON.parse(localStorage.getItem(EVENTS_KEY)) || [];
+    let favs = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
+    let postulaciones = JSON.parse(localStorage.getItem(APPS_KEY)) || [];
+
+    const byId = id => document.getElementById(id);
+    const formatDate = d => new Date(d).toLocaleDateString();
+
+    function renderFeed(filterText = "") {
+      const feed = byId("feed");
+      feed.innerHTML = "";
+
+      if (eventos.length === 0) {
+        feed.innerHTML = `<p class="no-events">Aún no hay eventos publicados 🕊️</p>`;
+        return;
+      }
+
+      const q = (filterText || "").toLowerCase().trim();
+      const lista = eventos.filter(ev => {
+        if (!q) return true;
+        const texto = [ev.titulo, ev.descripcion, ev.disciplina, ev.organizador]
+          .join(" ")
+          .toLowerCase();
+        return texto.includes(q);
+      });
+
+      lista.forEach(ev => {
+        const fav = favs.includes(ev.id);
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+      <div class="card-img">
+        <img src="${ev.img}" alt="${ev.titulo}">
+        <button class="fav-btn ${fav ? "fav" : ""}" data-id="${ev.id}">
+          ${fav ? "❤" : "♡"}
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="title">${ev.titulo}</div>
+        <div class="organizer">Organizado por ${ev.organizador || "—"}</div>
+        <div class="meta">${ev.tipo || "Evento"} • ${ev.disciplina || "General"}</div>
+        <p>${ev.descripcion?.length > 140 ? ev.descripcion.slice(0, 140) + "…" : ev.descripcion || "Sin descripción"}</p>
+        <div class="card-actions">
+          <button class="btn secondary"  data-id="${ev.id}" data-action="ver">Ver detalles</button>
+        </div>
+      </div>`;
+        feed.appendChild(card);
+      });
+
+      feed.querySelectorAll(".fav-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = Number(btn.dataset.id);
+          if (favs.includes(id)) {
+            favs = favs.filter(x => x !== id);
+          } else {
+            favs.push(id);
+          }
+          localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+          renderFeed(filterText);
+        };
+      });
+
+      feed.querySelectorAll('button[data-action="ver"]').forEach(btn => {
+        btn.addEventListener("click", () => openModal(Number(btn.dataset.id)));
+      });
+    }
+
+    const modal = byId("modal");
+    const applyBtn = byId("applyBtn");
+    let currentEventId = null;
+
+    function openModal(id) {
+      const ev = eventos.find(x => x.id === id);
+      if (!ev) return;
+      currentEventId = id;
+      byId("mImg").src = ev.img;
+      byId("mTitle").textContent = ev.titulo;
+      byId("mOrg").textContent = "Organizado por " + (ev.organizador || "—");
+      byId("mDesc").textContent = ev.descripcion || "Sin descripción";
+      byId("mReq").textContent = ev.requisitos || "Sin requisitos específicos";
+      byId("mPay").textContent = ev.pago || "No especificado";
+      byId("mDeadline").textContent = formatDate(ev.fechaLimite || new Date());
+      byId("mDisc").textContent = ev.disciplina || "General";
+      modal.classList.add("open");
+    }
+
+    function closeModal() {
+      modal.classList.remove("open");
+      currentEventId = null;
+    }
+
+    byId("closeBtn").onclick = closeModal;
+    byId("closeBtn2").onclick = closeModal;
+    modal.onclick = e => { if (e.target === modal) closeModal(); };
+
+    // Submodal de documentos
+    const docsModal = document.getElementById("docsModal");
+    const closeDocsBtn = document.querySelector(".closeDocs");
+    const extraDocsInput = document.getElementById("extraDocs");
+    const selectedFilesList = document.getElementById("selectedFiles");
+    const submitDocs = document.getElementById("submitDocs");
+
+    // Notificación personalizada
+    function showNotification(msg, type = "info") {
+      const notif = document.createElement("div");
+      notif.className = `toast ${type}`;
+      notif.textContent = msg;
+      document.body.appendChild(notif);
+      setTimeout(() => notif.classList.add("show"), 10);
+      setTimeout(() => {
+        notif.classList.remove("show");
+        setTimeout(() => notif.remove(), 300);
+      }, 2500);
+    }
+
+    applyBtn.onclick = () => {
+      if (!currentEventId) return;
+      let user = JSON.parse(localStorage.getItem("currentUser"));
+      let userName = user ? user.name : null;
+
+      if (!userName) {
+        userName = prompt("Para postular necesitamos tu nombre:");
+        if (!userName) return;
+        localStorage.setItem("currentUser", JSON.stringify({ name: userName }));
+      }
+
+      const ya = postulaciones.some(p => p.eventId === currentEventId && p.userName === userName);
+      if (ya) {
+        showNotification("⚠️ Ya te postulaste a este evento", "warn");
+        return;
+      }
+
+      docsModal.style.display = "flex";
+    };
+
+    closeDocsBtn.addEventListener("click", () => {
+      docsModal.style.display = "none";
+    });
+
+    extraDocsInput.addEventListener("change", () => {
+      const files = Array.from(extraDocsInput.files);
+      selectedFilesList.innerHTML = "";
+
+      if (files.length > 3) {
+        showNotification("Solo puedes subir hasta 3 documentos", "warn");
+        extraDocsInput.value = "";
+        return;
+      }
+
+      files.forEach(file => {
+        const li = document.createElement("li");
+        li.textContent = file.name;
+        selectedFilesList.appendChild(li);
+      });
+    });
+
+    submitDocs.addEventListener("click", () => {
+      // 🔹 Obtener el usuario actual y su email
+      const user = JSON.parse(localStorage.getItem("currentUser")) || {};
+      const artistInfo = JSON.parse(localStorage.getItem("artistInfo")) || {};
+
+      // 🔹 Datos del artista
+      const userName = user.name || "Invitado";
+      const userImg = artistInfo.foto || "/assets/img/avatar-default.png";
+
+      // 🔹 Obtener datos del evento completo
+      const evento = eventos.find(e => e.id === currentEventId);
+      if (!evento) {
+        showNotification("❌ Error: evento no encontrado", "warn");
+        return;
+      }
+
+      // 🔹 Evitar postulaciones duplicadas
+      const ya = postulaciones.some(
+        p => p.eventId === currentEventId && p.userName === userName
+      );
+      if (ya) {
+        showNotification("⚠️ Ya te postulaste a este evento", "warn");
+        return;
+      }
+
+      // 🔹 Crear registro completo de la postulación
+      const nuevaPostulacion = {
+        organizadorEmail: user.email,
+        id: Date.now(),
+        eventId: currentEventId,
+        eventTitle: evento.titulo,        // ⭐ NOMBRE DEL EVENTO
+        eventOrganizer: evento.organizador, // ⭐ ORGANIZADOR
+        eventDisciplina: evento.disciplina, // (opcional)
+        userName,
+        img: userImg,
+        estado: "pendiente",
+        fecha: new Date().toISOString()
+      };
+
+      postulaciones.push(nuevaPostulacion);
+      localStorage.setItem(APPS_KEY, JSON.stringify(postulaciones));
+
+      showNotification("✅ Postulación enviada con éxito", "success");
+      docsModal.style.display = "none";
+      modal.classList.remove("open");
+    });
+
+
+
+    byId("filterInput").addEventListener("input", e => renderFeed(e.target.value));
+    renderFeed();
+  </script>
+<script>
+  const perfilLink = document.getElementById("perfilLink");
+
+  perfilLink.addEventListener("click", () => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user) {
+      // No está logueado
+      window.location.href = "login.html";
+      return;
+    }
+
+    if (user.role === "organizador") {
+      window.location.href = "perfil-organizador.html";
+    } 
+    else if (user.role === "artista") {
+      window.location.href = "perfil-artista.html";
+    } 
+    else {
+      // Por si algún día hay otro tipo de rol
+      alert("Rol desconocido. Revisa el usuario.");
+    }
+  });
+</script>
+
+</body>
+
+</html>
